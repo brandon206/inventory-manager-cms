@@ -48,7 +48,7 @@ function addClickHandlersToElements(){
  * @return: 
        none
  */
-function handleAddClicked(){
+function handleAddClicked(studentObj){
       console.log("add was clicked");
       addStudent ();
       clearAddStudentFormInputs ();
@@ -76,7 +76,7 @@ function addStudent(){
       studentObj.studentGrade = $("#studentGrade").val();
       console.log(studentObj);
       student_array.push(studentObj);
-      updateStudentList ();
+      updateStudentList (student_array);
       clearAddStudentFormInputs ();
 }
 /***************************************************************************************************
@@ -93,21 +93,20 @@ function clearAddStudentFormInputs(){
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
 function renderStudentOnDom(studentObject){
-      for(var i = 0; i < student_array.length; i++){
-            var table_row = $("<tr>");
-            var name_TD = $("<td>").text(student_array[i].studentName); 
-            var course_TD = $("<td>").text(student_array[i].studentCourse);
-            var grade_TD = $("<td>").text(student_array[i].studentGrade);
-            var delete_button = $("<button>").addClass("btn btn-danger").text("Delete");
-            var op_TD = $("<td>");
-            op_TD.append(delete_button);
-      }
+      var table_row = $("<tr>");
+      var name_TD = $("<td>").text(studentObject.studentName); 
+      var course_TD = $("<td>").text(studentObject.studentCourse);
+      var grade_TD = $("<td>").text(studentObject.studentGrade);
+      var delete_button = $("<button>").addClass("btn btn-danger").text("Delete");
+      var op_TD = $("<td>");
+      op_TD.append(delete_button);
+
       $(table_row).append(name_TD,course_TD,grade_TD,op_TD);
       $("tbody").append(table_row);
       $(".btn-danger").on("click", function () {
             removeStudent ();
             $(event.currentTarget).closest("tr").remove();
-            calculateGradeAverage ();
+            calculateGradeAverage (student_array);
       });
 
 }
@@ -118,16 +117,16 @@ function renderStudentOnDom(studentObject){
  * @returns {undefined} none
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
-function updateStudentList(studentArray){
-      calculateGradeAverage ();
-      renderStudentOnDom();
+function updateStudentList(student_array){
+      calculateGradeAverage (student_array);
+      renderStudentOnDom(student_array[student_array.length-1]);
 }
 /***************************************************************************************************
  * calculateGradeAverage - loop through the global student array and calculate average grade and return that value
  * @param: {array} students  the array of student objects
  * @returns {number}
  */
-function calculateGradeAverage(studentArray){
+function calculateGradeAverage(student_array){
       var totalGradeScore = 0;
       for(var index = 0; index < student_array.length; index++){
             var combinedGradeScore = parseFloat(student_array[index].studentGrade);
@@ -154,8 +153,3 @@ function removeStudent () {
             }
             student_array.splice(index,1);
 }
-
-
-
-
-

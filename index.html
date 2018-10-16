@@ -8,7 +8,7 @@
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
 <body>
-<div class="container-fluid row">
+<div class="container-fluid">
     <div class="">
         <!-- only show this element when the isnt on mobile -->
         <h1 class = "hidden-xs">Student Grade Table
@@ -42,7 +42,8 @@
                    placeholder="Student Grade">
         </div>
         <button type="button" class="btn btn-success" onclick="">Add</button>
-        <button type="button" class="btn btn-default" onclick="">Cancel</button>
+        <button type="button" id= "cancelButton" class="btn btn-default" onclick="">Cancel</button>
+        <button type="button" id= "getDataFromServerButton" class="btn btn-default" onclick="">Get Data</button>
     </div>
     <div class="student-list-container col-sm-8 col-sm-pull-4">
         <table class="student-list table">
