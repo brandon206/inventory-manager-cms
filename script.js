@@ -105,12 +105,9 @@ function renderStudentOnDom(studentObject){
       $(table_row).append(name_TD,course_TD,grade_TD,op_TD);
       $("tbody").append(table_row);
       $(".btn-danger").on("click", function () {
-            var index = $(event.currentTarget).closest("tr").index();
-            if(index === -1){
-                  return;
-            }
-            student_array.splice(index,1);
+            removeStudent ();
             $(event.currentTarget).closest("tr").remove();
+            calculateGradeAverage ();
       });
 
 }
@@ -150,10 +147,13 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-// function removeStudent () {
-//       var index = $(event.currentTarget).closest("tr").index();
-//       student_array.splice(index,1);
-// }
+function removeStudent () {
+      var index = $(event.currentTarget).closest("tr").index();
+            if(index === -1){
+                  return;
+            }
+            student_array.splice(index,1);
+}
 
 
 
