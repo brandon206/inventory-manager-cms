@@ -104,7 +104,12 @@ function renderStudentOnDom(studentObject){
       }
       $(table_row).append(name_TD,course_TD,grade_TD,op_TD);
       $("tbody").append(table_row);
-      $(".btn-danger").on("click",function () {
+      $(".btn-danger").on("click", function () {
+            var index = $(event.currentTarget).closest("tr").index();
+            if(index === -1){
+                  return;
+            }
+            student_array.splice(index,1);
             $(event.currentTarget).closest("tr").remove();
       });
 
@@ -132,8 +137,9 @@ function calculateGradeAverage(studentArray){
             totalGradeScore += combinedGradeScore;
       }
       var average = totalGradeScore/student_array.length;
-      renderGradeAverage (average);
-      return average;
+      var fixedAverage = average.toFixed(2);
+      renderGradeAverage (fixedAverage+"%");
+      return fixedAverage;
 }
 /***************************************************************************************************
  * renderGradeAverage - updates the on-page grade average
@@ -143,6 +149,11 @@ function calculateGradeAverage(studentArray){
 function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
+
+// function removeStudent () {
+//       var index = $(event.currentTarget).closest("tr").index();
+//       student_array.splice(index,1);
+// }
 
 
 
