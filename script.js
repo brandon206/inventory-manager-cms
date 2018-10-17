@@ -38,8 +38,9 @@ function initializeApp(){
 *     
 */
 function addClickHandlersToElements(){
-      $(".btn-success").on("click",handleAddClicked);
-      $(".btn-default").on("click",handleCancelClick);
+      $("#addButton").on("click",handleAddClicked);
+      $("#cancelButton").on("click",handleCancelClick);
+      $("#getDataFromServerButton").on("click",handleGetDataClick);
 }
 
 /***************************************************************************************************
@@ -59,6 +60,21 @@ function handleAddClicked(studentObj){
  * @returns: {undefined} none
  * @calls: clearAddStudentFormInputs
  */
+
+function handleGetDataClick () {
+      var student_api_object = {
+            url: "http://s-apis.learningfuze.com/sgt/get",
+            method: "POST",
+            data: {api_key: "IluXv1RI8a"},
+            dataType: "json",
+            success: function (response) {
+                  console.log(response);
+            }
+      };
+
+      $.ajax(student_api_object);
+}
+
 function handleCancelClick(){
       console.log("cancel was clicked");
       clearAddStudentFormInputs ();
@@ -133,9 +149,17 @@ function calculateGradeAverage(student_array){
             totalGradeScore += combinedGradeScore;
       }
       var average = totalGradeScore/student_array.length;
-      var fixedAverage = average.toFixed(2);
-      renderGradeAverage (fixedAverage+"%");
-      return fixedAverage;
+      if(isNaN(average)){
+            average = 0;
+            var fixedAverage = average.toFixed(2);
+            renderGradeAverage (fixedAverage+"%");
+            return fixedAverage;
+      }
+      else{
+            var fixedAverage = average.toFixed(2);
+            renderGradeAverage (fixedAverage+"%");
+            return fixedAverage;
+      }
 }
 /***************************************************************************************************
  * renderGradeAverage - updates the on-page grade average
