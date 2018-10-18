@@ -113,18 +113,25 @@ function renderStudentOnDom(studentObject){
       var name_TD = $("<td>").text(studentObject.studentName); 
       var course_TD = $("<td>").text(studentObject.studentCourse);
       var grade_TD = $("<td>").text(studentObject.studentGrade);
-      var delete_button = $("<button>").addClass("btn btn-danger").text("Delete");
       var op_TD = $("<td>");
+      
+      var delete_button = $("<button>",{
+            text: "delete",
+            "class": "btn btn-danger",
+            on: {
+                  click: function () {
+                        table_row.remove();
+                        var index = student_array.indexOf(studentObject);
+                        student_array.splice(index,1);
+                        calculateGradeAverage (student_array);
+
+                  }
+            }
+      });
       op_TD.append(delete_button);
 
-      $(table_row).append(name_TD,course_TD,grade_TD,op_TD);
-      $("tbody").append(table_row);
-      $(".btn-danger").on("click", function () {
-            removeStudent ();
-            $(event.currentTarget).closest("tr").remove();
-            calculateGradeAverage (student_array);
-      });
-
+      var currentStudentRow = $(table_row).append(name_TD,course_TD,grade_TD,op_TD);
+      $("tbody").append(table_row);     
 }
 
 /***************************************************************************************************
@@ -134,8 +141,11 @@ function renderStudentOnDom(studentObject){
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
 function updateStudentList(student_array){
+      $("tbody").empty();
+      for(var i = 0; i < student_array.length; i++){
+            renderStudentOnDom(student_array[i]);
+      }
       calculateGradeAverage (student_array);
-      renderStudentOnDom(student_array[student_array.length-1]);
 }
 /***************************************************************************************************
  * calculateGradeAverage - loop through the global student array and calculate average grade and return that value
@@ -151,12 +161,12 @@ function calculateGradeAverage(student_array){
       var average = totalGradeScore/student_array.length;
       if(isNaN(average)){
             average = 0;
-            var fixedAverage = average.toFixed(2);
+            var fixedAverage = average.toFixed(0);
             renderGradeAverage (fixedAverage+"%");
             return fixedAverage;
       }
       else{
-            var fixedAverage = average.toFixed(2);
+            var fixedAverage = average.toFixed(0);
             renderGradeAverage (fixedAverage+"%");
             return fixedAverage;
       }
@@ -170,10 +180,7 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-function removeStudent () {
-      var index = $(event.currentTarget).closest("tr").index();
-            if(index === -1){
-                  return;
-            }
-            student_array.splice(index,1);
-}
+// function removeStudent (studentObject) {
+//       var student_object_index = studentObject[0];
+//       student_array.splice(student_object_index,1);
+// }
