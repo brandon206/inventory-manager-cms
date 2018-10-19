@@ -36,13 +36,21 @@ function loadData () {
       var student_api_object = {
             url: "http://s-apis.learningfuze.com/sgt/get",
             method: "POST",
-            data: {api_key: "IluXv1RI8a"},
+            data: {api_key: "IluXv1RI8a", "force-failure":"request"},
             dataType: "json",
             success: function (response) {
-                  student_array = response.data;
-                  updateStudentList(student_array);
                   console.log(response);
-                  return(response);
+                  var error_message = response.error.join();
+                  if(response.error.length > 0){
+                        $('.modal_error_message').text(error_message);
+                        $('#errorModal').modal('show');
+                  }
+                  else{
+                        student_array = response.data;
+                        updateStudentList(student_array);
+                        console.log(response);
+                        return(response);
+                  }
             }
       };
 
@@ -214,13 +222,7 @@ function addStudentToDB (name,course,grade){
             dataType: "json",
             success: function (response) {
                   console.log(response);
-
-                  // var error_message = response.errors.join();
-                  // if(response.errors.length > 0){
-                  //       $('.modal_error_message').text(error_message);
-                  //       $('#errorModal').modal('show');
-                  // }
-                  // return(response);
+                  return(response);
             },
             error: function (response) {
                   console.log(response);
