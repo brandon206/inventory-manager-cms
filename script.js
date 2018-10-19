@@ -29,6 +29,23 @@ var student_array = [];
 */
 function initializeApp(){
       addClickHandlersToElements ();
+      loadData ();
+}
+
+function loadData () {
+      var student_api_object = {
+            url: "http://s-apis.learningfuze.com/sgt/get",
+            method: "POST",
+            data: {api_key: "IluXv1RI8a"},
+            dataType: "json",
+            success: function (response) {
+                  updateStudentList(response.data);
+                  console.log(response);
+                  return(response);
+            }
+      };
+
+      $.ajax(student_api_object);
 }
 
 /***************************************************************************************************
@@ -87,11 +104,27 @@ function handleCancelClick(){
  */
 function addStudent(){
       var studentObj = {};
-      studentObj.studentName = $("#studentName").val();
-      studentObj.studentCourse = $("#course").val();
-      studentObj.studentGrade = $("#studentGrade").val();
+      studentObj.name = $("#studentName").val();
+      studentObj.course = $("#course").val();
+      studentObj.grade = $("#studentGrade").val();
       console.log(studentObj);
       student_array.push(studentObj);
+      var student_api_object = {
+            url: "http://s-apis.learningfuze.com/sgt/create",
+            method: "POST",
+            data: {
+                  api_key: "IluXv1RI8a",
+                  name: studentObj.name,
+                  course: studentObj.course,
+                  grade: studentObj.grade
+            },
+            dataType: "json",
+            success: function (response) {
+                  return(response);
+            }
+      };
+
+      $.ajax(student_api_object);
       updateStudentList (student_array);
       clearAddStudentFormInputs ();
 }
@@ -110,9 +143,9 @@ function clearAddStudentFormInputs(){
  */
 function renderStudentOnDom(studentObject){
       var table_row = $("<tr>");
-      var name_TD = $("<td>").text(studentObject.studentName); 
-      var course_TD = $("<td>").text(studentObject.studentCourse);
-      var grade_TD = $("<td>").text(studentObject.studentGrade);
+      var name_TD = $("<td>").text(studentObject.name);
+      var course_TD = $("<td>").text(studentObject.course);
+      var grade_TD = $("<td>").text(studentObject.grade);
       var op_TD = $("<td>");
       
       var delete_button = $("<button>",{
@@ -155,7 +188,7 @@ function updateStudentList(student_array){
 function calculateGradeAverage(student_array){
       var totalGradeScore = 0;
       for(var index = 0; index < student_array.length; index++){
-            var combinedGradeScore = parseFloat(student_array[index].studentGrade);
+            var combinedGradeScore = parseFloat(student_array[index].grade);
             totalGradeScore += combinedGradeScore;
       }
       var average = totalGradeScore/student_array.length;
@@ -184,3 +217,20 @@ function renderGradeAverage(average){
 //       var student_object_index = studentObject[0];
 //       student_array.splice(student_object_index,1);
 // }
+
+function deleteFromDB () {
+      var student_api_object = {
+            url: "http://s-apis.learningfuze.com/sgt/delete",
+            method: "POST",
+            data: {
+                  api_key: "IluXv1RI8a",
+                  id: response.data.id(index)
+            },
+            dataType: "json",
+            success: function (response) {
+                  return(response);
+            }
+      };
+
+      $.ajax(student_api_object);
+}
