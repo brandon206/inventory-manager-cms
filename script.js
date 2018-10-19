@@ -208,11 +208,24 @@ function addStudentToDB (name,course,grade){
                   api_key: "IluXv1RI8a",
                   name: name,
                   course: course,
-                  grade: grade
+                  grade: grade,
+                  "force-failure": "server"
             },
             dataType: "json",
             success: function (response) {
-                  return(response);
+                  console.log(response);
+
+                  // var error_message = response.errors.join();
+                  // if(response.errors.length > 0){
+                  //       $('.modal_error_message').text(error_message);
+                  //       $('#errorModal').modal('show');
+                  // }
+                  // return(response);
+            },
+            error: function (response) {
+                  console.log(response);
+                  $('.modal_error_message').text(response.statusText);
+                  $('#errorModal').modal('show');
             }
       };
       $.ajax(student_api_object);
@@ -228,6 +241,7 @@ function deleteFromDB (idIndex) {
             },
             dataType: "json",
             success: function (response) {
+                  console.log(response);
                   return(response);
             }
       };
