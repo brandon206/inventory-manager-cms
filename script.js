@@ -39,7 +39,8 @@ function loadData () {
             data: {api_key: "IluXv1RI8a"},
             dataType: "json",
             success: function (response) {
-                  updateStudentList(response.data);
+                  student_array = response.data;
+                  updateStudentList(student_array);
                   console.log(response);
                   return(response);
             }
@@ -142,9 +143,8 @@ function renderStudentOnDom(studentObject){
                         table_row.remove();
                         var index = student_array.indexOf(studentObject);
                         student_array.splice(index,1);
-                        // deleteFromDB (index);
+                        deleteFromDB (studentObject.id);
                         calculateGradeAverage (student_array);
-
                   }
             }
       });
@@ -200,11 +200,6 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-// function removeStudent (studentObject) {
-//       var student_object_index = studentObject[0];
-//       student_array.splice(student_object_index,1);
-// }
-
 function addStudentToDB (name,course,grade){
       var student_api_object = {
             url: "http://s-apis.learningfuze.com/sgt/create",
@@ -223,19 +218,19 @@ function addStudentToDB (name,course,grade){
       $.ajax(student_api_object);
 }
 
-// function deleteFromDB (index) {
-//       var student_api_object = {
-//             url: "http://s-apis.learningfuze.com/sgt/delete",
-//             method: "POST",
-//             data: {
-//                   api_key: "IluXv1RI8a",
-//                   id: response.data.id(index)
-//             },
-//             dataType: "json",
-//             success: function (response) {
-//                   return(response);
-//             }
-//       };
+function deleteFromDB (idIndex) {
+      var student_api_object = {
+            url: "http://s-apis.learningfuze.com/sgt/delete",
+            method: "POST",
+            data: {
+                  api_key: "IluXv1RI8a",
+                  student_id: idIndex
+            },
+            dataType: "json",
+            success: function (response) {
+                  return(response);
+            }
+      };
 
-//       $.ajax(student_api_object);
-// }
+      $.ajax(student_api_object);
+}
