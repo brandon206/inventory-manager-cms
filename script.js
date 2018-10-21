@@ -36,21 +36,24 @@ function loadData () {
       var student_api_object = {
             url: "http://s-apis.learningfuze.com/sgt/get",
             method: "POST",
-            data: {api_key: "IluXv1RI8a", "force-failure":"request"},
+            data: {
+                  api_key: "IluXv1RI8a",
+                  // "force-failure":"request"
+            },
             dataType: "json",
             success: function (response) {
                   console.log(response);
-                  var error_message = response.error.join();
-                  if(response.error.length > 0){
-                        $('.modal_error_message').text(error_message);
-                        $('#errorModal').modal('show');
-                  }
-                  else{
+                  // if(response.error.length > 0){
+                  //       var error_message = response.error.join();
+                  //       $('.modal_error_message').text(error_message);
+                  //       $('#errorModal').modal('show');
+                  // }
+                  // else{
                         student_array = response.data;
                         updateStudentList(student_array);
                         console.log(response);
                         return(response);
-                  }
+                  // }
             }
       };
 
@@ -217,7 +220,7 @@ function addStudentToDB (name,course,grade){
                   name: name,
                   course: course,
                   grade: grade,
-                  "force-failure": "server"
+                  // "force-failure": "server"
             },
             dataType: "json",
             success: function (response) {
@@ -239,14 +242,29 @@ function deleteFromDB (idIndex) {
             method: "POST",
             data: {
                   api_key: "IluXv1RI8a",
-                  student_id: idIndex
+                  student_id: idIndex,
+                  "force-failure": "timeout"
             },
             dataType: "json",
             success: function (response) {
                   console.log(response);
                   return(response);
+            },
+            error: function (jqXHR,exception) {
+                  console.log(jqXHR,exception);
+                  var error_message = "";
+                  if(exception === "timeout"){
+                        error_message = "Time out error"
+                  }
+                  console.log(error_message);
+                  // setTimeout(function(){ 
+                  //       $('.modal_error_message').text("took too long to load response from database");
+                  //       $('#errorModal').modal('show');}, 2000);
             }
       };
-
+      setTimeout(function(){ 
+            $('.modal_error_message').text("took too long to load response from database");
+            $('#errorModal').modal('show');}, 2000);
       $.ajax(student_api_object);
+      return;
 }
