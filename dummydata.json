@@ -1,0 +1,22 @@
+{
+	"success": true,
+	"data": [{
+		"id": 1,
+		"product_title": "Air Max 90",
+		"product_description": "90's inspired shoes",
+		"quantity": 500,
+		"price": 109.99
+	}, {
+		"id": 2,
+		"product_title": "Nike Kobe AD",
+		"product_description": "Kobe inspired shoes",
+		"quantity": 250,
+		"price": 99.99
+	}, {
+		"id": 3,
+		"product_title": "Nike Hyperdunk",
+		"product_description": "shoes for dunking",
+		"quantity": 100,
+		"price": 69.99
+	}]
+}
