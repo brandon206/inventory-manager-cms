@@ -33,7 +33,7 @@ function initializeApp(){
 }
 
 function loadData () {
-      var student_api_object = {
+      var inventory_api_object = {
             url: "api/read.php",
             method: "POST",
             data: {
@@ -58,7 +58,7 @@ function loadData () {
             }
       };
 
-      $.ajax(student_api_object);
+      $.ajax(inventory_api_object);
 }
 
 /***************************************************************************************************
@@ -79,9 +79,9 @@ function addClickHandlersToElements(){
  * @return: 
        none
  */
-function handleAddClicked(studentObj){
+function handleAddClicked(inventoryObj){
       console.log("add was clicked");
-      addStudent ();
+      addInventory ();
       clearAddStudentFormInputs ();
 }
 /***************************************************************************************************
@@ -115,16 +115,18 @@ function handleCancelClick(){
  * @return undefined
  * @calls clearAddStudentFormInputs, updateStudentList
  */
-function addStudent(){
-      var studentObj = {};
-      studentObj.name = $("#studentName").val();
-      studentObj.course = $("#course").val();
-      studentObj.grade = $("#studentGrade").val();
-      console.log(studentObj);
-      student_array.push(studentObj);
-      addStudentToDB (studentObj.name,studentObj.course,studentObj.grade);
+function addInventory(){
+      var inventoryObj = {};
+      inventoryObj.id = $("#id").val();
+      inventoryObj.product_title = $("#title").val();
+      inventoryObj.product_description = $("#description").val();
+      inventoryObj.quantity = $("#quantity").val();
+      inventoryObj.price = $("#price").val();
+      console.log(inventoryObj);
+      inventory_array.push(inventoryObj);
+      addStudentToDB (inventoryObj.id,inventoryObj.title,inventoryObj.description,inventoryObj.quantity,inventoryObj.price);
 
-      updateStudentList (student_array);
+      updateStudentList (inventory_array);
       clearAddStudentFormInputs ();
 }
 /***************************************************************************************************
@@ -141,6 +143,7 @@ function clearAddStudentFormInputs(){
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
 function renderStudentOnDom(inventoryObject){
+      console.log("this is the inventoryOBject: ", inventoryObject);
       var table_row = $("<tr>");
       var id_TD = $("<td>").text(inventoryObject.id);
       var title_TD = $("<td>").text(inventoryObject.product_title);
