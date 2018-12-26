@@ -19,7 +19,7 @@ $(document).ready(initializeApp);
  *  { name: 'Jill', course: 'Comp Sci', grade: 85 }
  * ];
  */
-var student_array = [];
+var inventory_array = [];
 
 /***************************************************************************************************
 * initializeApp 
@@ -33,7 +33,7 @@ function initializeApp(){
 }
 
 function loadData () {
-      var student_api_object = {
+      var inventory_api_object = {
             url: "api/read.php",
             method: "POST",
             data: {
@@ -58,7 +58,7 @@ function loadData () {
             }
       };
 
-      $.ajax(student_api_object);
+      $.ajax(inventory_api_object);
 }
 
 /***************************************************************************************************
@@ -79,10 +79,10 @@ function addClickHandlersToElements(){
  * @return: 
        none
  */
-function handleAddClicked(studentObj){
+function handleAddClicked(inventoryObj){
       console.log("add was clicked");
-      addStudent ();
-      clearAddStudentFormInputs ();
+      addInventory ();
+      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
@@ -107,7 +107,7 @@ function handleGetDataClick () {
 
 function handleCancelClick(){
       console.log("cancel was clicked");
-      clearAddStudentFormInputs ();
+      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -115,25 +115,29 @@ function handleCancelClick(){
  * @return undefined
  * @calls clearAddStudentFormInputs, updateStudentList
  */
-function addStudent(){
-      var studentObj = {};
-      studentObj.name = $("#studentName").val();
-      studentObj.course = $("#course").val();
-      studentObj.grade = $("#studentGrade").val();
-      console.log(studentObj);
-      student_array.push(studentObj);
-      addStudentToDB (studentObj.name,studentObj.course,studentObj.grade);
+function addInventory(){
+      var inventoryObj = {};
+      inventoryObj.id = $("#id").val();
+      inventoryObj.product_title = $("#title").val();
+      inventoryObj.product_description = $("#description").val();
+      inventoryObj.quantity = $("#quantity").val();
+      inventoryObj.price = $("#price").val();
+      console.log("===Inventory Object=== ", inventoryObj);
+      inventory_array.push(inventoryObj);
+      addStudentToDB (inventoryObj.id,inventoryObj.product_title,inventoryObj.product_description,inventoryObj.quantity,inventoryObj.price);
 
-      updateStudentList (student_array);
-      clearAddStudentFormInputs ();
+      updateStudentList (inventory_array);
+      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
-function clearAddStudentFormInputs(){
-      $("#studentName").val("");
-      $("#course").val("");
-      $("#studentGrade").val("");
+function clearAddInventoryFormInputs(){
+      $("#id").val("");
+      $("#title").val("");
+      $("#description").val("");
+      $("#quantity").val("");
+      $("#price").val("");
 }
 /***************************************************************************************************
  * renderStudentOnDom - take in a student object, create html elements from the values and then append the elements
@@ -141,6 +145,7 @@ function clearAddStudentFormInputs(){
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
 function renderStudentOnDom(inventoryObject){
+      console.log("this is the inventoryOBject: ", inventoryObject);
       var table_row = $("<tr>");
       var id_TD = $("<td>").text(inventoryObject.id);
       var title_TD = $("<td>").text(inventoryObject.product_title);
@@ -214,15 +219,16 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-function addStudentToDB (name,course,grade){
+function addStudentToDB (id,product_title,product_description,quantity,price){
       var student_api_object = {
-            url: "http://s-apis.learningfuze.com/sgt/create",
+            url: "api/create.php",
             method: "POST",
             data: {
                   api_key: "IluXv1RI8a",
-                  name: name,
-                  course: course,
-                  grade: grade,
+                  product_title: product_title,
+                  product_description: product_description,
+                  quantity: quantity,
+                  price: price,
                   // "force-failure": "server"
             },
             dataType: "json",
