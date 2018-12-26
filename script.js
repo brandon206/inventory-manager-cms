@@ -157,20 +157,41 @@ function renderStudentOnDom(inventoryObject){
       var delete_button = $("<button>",{
             text: "delete",
             "class": "btn btn-danger",
-            on: {
-                  click: function () {
-                        table_row.remove();
-                        var index = inventory_array.indexOf(inventoryObject);
-                        inventory_array.splice(index,1);
-                        deleteFromDB (inventoryObject.id);
-                        calculateGradeAverage (inventory_array);
-                  }
-            }
+            "data-toggle" : "modal",
+            "data-target" : "#deleteModal",
+            // on: {
+            //       click: handleDeleteClick(table_row, inventoryObject)
+            // }
       });
+
+      $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
+
       op_TD.append(delete_button);
 
       var currentStudentRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
       $("tbody").append(table_row);     
+}
+
+function handleDeleteClick (table_row, inventoryObject){
+      debugger;
+      var thisRowIndex = $(table_row).closest("tr").index();
+      var currentProduct = inventory_array[thisRowIndex];
+      var index = inventory_array.indexOf(inventoryObject);
+
+      $("#deleteModal .product-title").text(`Product Title: ${currentProduct.product_title}`);
+      $("#deleteModal .product-description").text(`Product Description: ${currentProduct.product_description}`);
+      $("#deleteModal .quantity").text(`Quantity: ${currentProduct.quantity}`);
+      $("#deleteModal .price").text(`Price: ${currentProduct.price}`);
+
+      $(".delete_button").click(() => confirmDelete(currentProduct, table_row, thisRowIndex));
+}
+
+function confirmDelete (product, row, index){
+      debugger;
+      inventory_array.splice(index,1);
+      row.remove();
+      deleteFromDB(product);
+      $('.delete_button').off();
 }
 
 /***************************************************************************************************
