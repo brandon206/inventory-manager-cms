@@ -37,7 +37,7 @@ function loadData () {
             url: "api/read.php",
             method: "POST",
             data: {
-                  api_key: "IluXv1RI8a",
+                  // api_key: "IluXv1RI8a",
                   // "force-failure":"request"
             },
             dataType: "json",
@@ -49,8 +49,9 @@ function loadData () {
                   //       $('#errorModal').modal('show');
                   // }
                   // else{
-                        student_array = response.data;
-                        updateStudentList(student_array);
+                        inventory_array = response.data;
+                        console.log("this is the student array: ",inventory_array);
+                        updateStudentList(inventory_array);
                         console.log(response);
                         return(response);
                   // }
@@ -139,11 +140,13 @@ function clearAddStudentFormInputs(){
  * into the .student_list tbody
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
-function renderStudentOnDom(studentObject){
+function renderStudentOnDom(inventoryObject){
       var table_row = $("<tr>");
-      var name_TD = $("<td>").text(studentObject.name);
-      var course_TD = $("<td>").text(studentObject.course);
-      var grade_TD = $("<td>").text(studentObject.grade);
+      var id_TD = $("<td>").text(inventoryObject.id);
+      var title_TD = $("<td>").text(inventoryObject.product_title);
+      var description_TD = $("<td>").text(inventoryObject.product_description);
+      var quantity_TD = $("<td>").text(inventoryObject.quantity);
+      var price_TD = $("<td>").text(inventoryObject.price);
       var op_TD = $("<td>");
       
       var delete_button = $("<button>",{
@@ -161,7 +164,7 @@ function renderStudentOnDom(studentObject){
       });
       op_TD.append(delete_button);
 
-      var currentStudentRow = $(table_row).append(name_TD,course_TD,grade_TD,op_TD);
+      var currentStudentRow = $(table_row).append(id_TD,title_TD,description_TD, quantity_TD, price_TD,op_TD);
       $("tbody").append(table_row);     
 }
 
@@ -171,12 +174,12 @@ function renderStudentOnDom(studentObject){
  * @returns {undefined} none
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
-function updateStudentList(student_array){
+function updateStudentList(inventory_array){
       $("tbody").empty();
-      for(var i = 0; i < student_array.length; i++){
-            renderStudentOnDom(student_array[i]);
+      for(var i = 0; i < inventory_array.length; i++){
+            renderStudentOnDom(inventory_array[i]);
       }
-      calculateGradeAverage (student_array);
+      calculateGradeAverage (inventory_array);
 }
 /***************************************************************************************************
  * calculateGradeAverage - loop through the global student array and calculate average grade and return that value

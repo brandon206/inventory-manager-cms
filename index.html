@@ -28,16 +28,16 @@
 <div class="container-fluid">
     <div class="">
         <!-- only show this element when the isnt on mobile -->
-        <h1 class = "hidden-xs">Student Grade Table
+        <h1 class = "hidden-xs">Inventory Manager
             <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small>
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
-        <h3 class = "visible-xs">Student Grade Table
+        <h3 class = "visible-xs">Inventory Manager
             <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small>
         </h3>
     </div>
     <div class="student-add-form col-sm-4 col-sm-push-8">
-        <h4>Add Student</h4>
+        <h4>Add Item</h4>
         <div class="form-group input-group">
             <span class = "input-group-addon">
                 <span class="glyphicon glyphicon-user"></span>
@@ -66,9 +66,11 @@
         <table class="student-list table">
             <thead>
             <tr>
-                <th>Student Name</th>
-                <th>Student Course</th>
-                <th>Student Grade</th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
                 <th>Operations</th>
             </tr>
             </thead>
