@@ -164,7 +164,7 @@ function renderStudentOnDom(inventoryObject){
             // }
       });
 
-      $(".delete_button").click(() => handleDeleteClick(table_row, inventoryObject));
+      $(".delete_button").click(handleDeleteClick(table_row, inventoryObject));
 
       op_TD.append(delete_button);
 
@@ -177,10 +177,10 @@ function handleDeleteClick (table_row, inventoryObject){
       // var thisDeleteButton = $(this);
       // console.log("THIS IS DELETE BUTTON: ", thisDeleteButton);
       var thisRowIndex = $(table_row).closest("tr").index();
-      var currentProduct = inventory_array[thisRowIndex];
-      $(".delete_button").click(() => confirmDelete(currentProduct, table_row, thisRowIndex));
+      // var currentProduct = inventory_array[thisRowIndex];
+      var index = inventory_array.indexOf(inventoryObject);
+      $(".delete_button").click(confirmDelete(currentProduct, table_row, index));
       // table_row.remove();
-      // var index = inventory_array.indexOf(inventoryObject);
       // inventory_array.splice(index,1);
       // deleteFromDB (inventoryObject.id);
       // calculateGradeAverage (inventory_array);
@@ -189,7 +189,7 @@ function handleDeleteClick (table_row, inventoryObject){
 function confirmDelete (product, row, index){
       debugger;
       inventory_array.splice(index,1);
-      row.closest("tr").remove();
+      row.remove();
       deleteFromDB(product);
 }
 
