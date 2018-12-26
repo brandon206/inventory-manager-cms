@@ -122,9 +122,9 @@ function addInventory(){
       inventoryObj.product_description = $("#description").val();
       inventoryObj.quantity = $("#quantity").val();
       inventoryObj.price = $("#price").val();
-      console.log(inventoryObj);
+      console.log("===Inventory Object=== ", inventoryObj);
       inventory_array.push(inventoryObj);
-      addStudentToDB (inventoryObj.id,inventoryObj.title,inventoryObj.description,inventoryObj.quantity,inventoryObj.price);
+      addStudentToDB (inventoryObj.id,inventoryObj.product_title,inventoryObj.product_description,inventoryObj.quantity,inventoryObj.price);
 
       updateStudentList (inventory_array);
       clearAddInventoryFormInputs ();
@@ -219,15 +219,16 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-function addStudentToDB (name,course,grade){
+function addStudentToDB (id,product_title,product_description,quantity,price){
       var student_api_object = {
-            url: "http://s-apis.learningfuze.com/sgt/create",
+            url: "api/create.php",
             method: "POST",
             data: {
                   api_key: "IluXv1RI8a",
-                  name: name,
-                  course: course,
-                  grade: grade,
+                  product_title: product_title,
+                  product_description: product_description,
+                  quantity: quantity,
+                  price: price,
                   // "force-failure": "server"
             },
             dataType: "json",
