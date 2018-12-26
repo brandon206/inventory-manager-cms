@@ -157,20 +157,40 @@ function renderStudentOnDom(inventoryObject){
       var delete_button = $("<button>",{
             text: "delete",
             "class": "btn btn-danger",
-            on: {
-                  click: function () {
-                        table_row.remove();
-                        var index = inventory_array.indexOf(inventoryObject);
-                        inventory_array.splice(index,1);
-                        deleteFromDB (inventoryObject.id);
-                        calculateGradeAverage (inventory_array);
-                  }
-            }
+            "data-toggle" : "modal",
+            "data-target" : "#deleteModal",
+            // on: {
+            //       click: handleDeleteClick(table_row, inventoryObject)
+            // }
       });
+
+      $(".delete_button").click(() => handleDeleteClick(table_row, inventoryObject));
+
       op_TD.append(delete_button);
 
       var currentStudentRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
       $("tbody").append(table_row);     
+}
+
+function handleDeleteClick (table_row, inventoryObject){
+      debugger;
+      // var thisDeleteButton = $(this);
+      // console.log("THIS IS DELETE BUTTON: ", thisDeleteButton);
+      var thisRowIndex = $(table_row).closest("tr").index();
+      var currentProduct = inventory_array[thisRowIndex];
+      $(".delete_button").click(() => confirmDelete(currentProduct, table_row, thisRowIndex));
+      // table_row.remove();
+      // var index = inventory_array.indexOf(inventoryObject);
+      // inventory_array.splice(index,1);
+      // deleteFromDB (inventoryObject.id);
+      // calculateGradeAverage (inventory_array);
+}
+
+function confirmDelete (product, row, index){
+      debugger;
+      inventory_array.splice(index,1);
+      row.closest("tr").remove();
+      deleteFromDB(product);
 }
 
 /***************************************************************************************************
