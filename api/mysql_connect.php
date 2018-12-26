@@ -13,5 +13,5 @@ if (empty($conn)) {
     print("Connection unavailable");
     exit();
 } 
-echo "Connected successfully";
+// echo "Connected successfully";
 ?>
