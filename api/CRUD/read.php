@@ -1,6 +1,8 @@
 <?php
 
-require_once('mysql_connect.php');
+if(empty($LOCAL_ACCESS)){
+    die('Direct access not allowed');
+}
 
 $query = "SELECT * FROM Inventory";
 
@@ -24,9 +26,5 @@ if(!empty($result)){
 }else {
     $output['errors'][] = mysqli_error($conn);
 }   
-
-$json_output = json_encode($output);
-
-print($json_output);
 
 ?>

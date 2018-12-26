@@ -1,6 +1,8 @@
 <?php
 
-require_once('mysql_connect.php');
+if(empty($LOCAL_ACCESS)){
+    die('Direct access not allowed');
+}
 
 $product_title = $_POST['product_title'];
 $product_description = $_POST['product_description'];
@@ -30,7 +32,5 @@ if(!empty($result)){
     $output['errors'][] = "Invalid query";
 }
 
-$json_output = json_encode($output);
-print($json_output);
 
 ?>
