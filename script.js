@@ -34,7 +34,7 @@ function initializeApp(){
 
 function loadData () {
       var student_api_object = {
-            url: "http://s-apis.learningfuze.com/sgt/get",
+            url: "api/read.php",
             method: "POST",
             data: {
                   api_key: "IluXv1RI8a",
