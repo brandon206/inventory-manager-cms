@@ -34,11 +34,12 @@ function initializeApp(){
 
 function loadData () {
       var inventory_api_object = {
-            url: "api/read.php",
+            url: "api/access.php",
             method: "POST",
             data: {
                   // api_key: "IluXv1RI8a",
                   // "force-failure":"request"
+                  'action' : 'read'
             },
             dataType: "json",
             success: function (response) {
@@ -147,7 +148,6 @@ function clearAddInventoryFormInputs(){
 function renderStudentOnDom(inventoryObject){
       console.log("this is the inventoryOBject: ", inventoryObject);
       var table_row = $("<tr>");
-      var id_TD = $("<td>").text(inventoryObject.id);
       var title_TD = $("<td>").text(inventoryObject.product_title);
       var description_TD = $("<td>").text(inventoryObject.product_description);
       var quantity_TD = $("<td>").text(inventoryObject.quantity);
@@ -160,16 +160,16 @@ function renderStudentOnDom(inventoryObject){
             on: {
                   click: function () {
                         table_row.remove();
-                        var index = student_array.indexOf(studentObject);
-                        student_array.splice(index,1);
-                        deleteFromDB (studentObject.id);
-                        calculateGradeAverage (student_array);
+                        var index = inventory_array.indexOf(inventoryObject);
+                        inventory_array.splice(index,1);
+                        deleteFromDB (inventoryObject.id);
+                        calculateGradeAverage (inventory_array);
                   }
             }
       });
       op_TD.append(delete_button);
 
-      var currentStudentRow = $(table_row).append(id_TD,title_TD,description_TD, quantity_TD, price_TD,op_TD);
+      var currentStudentRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
       $("tbody").append(table_row);     
 }
 
@@ -221,14 +221,15 @@ function renderGradeAverage(average){
 
 function addStudentToDB (id,product_title,product_description,quantity,price){
       var student_api_object = {
-            url: "api/create.php",
+            url: "api/access.php",
             method: "POST",
             data: {
-                  api_key: "IluXv1RI8a",
+                  // api_key: "IluXv1RI8a",
                   product_title: product_title,
                   product_description: product_description,
                   quantity: quantity,
                   price: price,
+                  'action' : 'create'
                   // "force-failure": "server"
             },
             dataType: "json",
@@ -246,13 +247,14 @@ function addStudentToDB (id,product_title,product_description,quantity,price){
 }
 
 function deleteFromDB (idIndex) {
-      var student_api_object = {
-            url: "http://s-apis.learningfuze.com/sgt/delete",
+      var inventory_api_object = {
+            url: "api/access.php",
             method: "POST",
             data: {
-                  api_key: "IluXv1RI8a",
-                  student_id: idIndex,
-                  "force-failure": "timeout"
+                  // api_key: "IluXv1RI8a",
+                  id: idIndex,
+                  'action' : 'delete'
+                  // "force-failure": "timeout"
             },
             dataType: "json",
             success: function (response) {
@@ -271,9 +273,9 @@ function deleteFromDB (idIndex) {
                   //       $('#errorModal').modal('show');}, 2000);
             }
       };
-      setTimeout(function(){ 
-            $('.modal_error_message').text("took too long to load response from database");
-            $('#errorModal').modal('show');}, 2000);
-      $.ajax(student_api_object);
+      // setTimeout(function(){ 
+      //       $('.modal_error_message').text("took too long to load response from database");
+      //       $('#errorModal').modal('show');}, 2000);
+      $.ajax(inventory_api_object);
       return;
 }
