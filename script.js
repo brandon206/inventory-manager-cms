@@ -19,7 +19,7 @@ $(document).ready(initializeApp);
  *  { name: 'Jill', course: 'Comp Sci', grade: 85 }
  * ];
  */
-var student_array = [];
+var inventory_array = [];
 
 /***************************************************************************************************
 * initializeApp 
@@ -82,7 +82,7 @@ function addClickHandlersToElements(){
 function handleAddClicked(inventoryObj){
       console.log("add was clicked");
       addInventory ();
-      clearAddStudentFormInputs ();
+      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
@@ -107,7 +107,7 @@ function handleGetDataClick () {
 
 function handleCancelClick(){
       console.log("cancel was clicked");
-      clearAddStudentFormInputs ();
+      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -127,15 +127,17 @@ function addInventory(){
       addStudentToDB (inventoryObj.id,inventoryObj.title,inventoryObj.description,inventoryObj.quantity,inventoryObj.price);
 
       updateStudentList (inventory_array);
-      clearAddStudentFormInputs ();
+      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
-function clearAddStudentFormInputs(){
-      $("#studentName").val("");
-      $("#course").val("");
-      $("#studentGrade").val("");
+function clearAddInventoryFormInputs(){
+      $("#id").val("");
+      $("#title").val("");
+      $("#description").val("");
+      $("#quantity").val("");
+      $("#price").val("");
 }
 /***************************************************************************************************
  * renderStudentOnDom - take in a student object, create html elements from the values and then append the elements
