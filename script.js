@@ -178,10 +178,10 @@ function handleDeleteClick (table_row, inventoryObject){
       var currentProduct = inventory_array[thisRowIndex];
       var index = inventory_array.indexOf(inventoryObject);
 
-      $("#deleteModal .product-title").val(`Product Title: ${currentProduct.product_title}`);
+      $("#deleteModal .product-title").val(currentProduct.product_title);
       $("#deleteModal .product-title").val(currentProduct.product_title);
       $("#deleteModal .product-description").val(currentProduct.product_description);
-      $("#deleteModal .quantity").val(currentProduct.quantity);ß
+      $("#deleteModal .quantity").val(currentProduct.quantity);
       $("#deleteModal .price").val(currentProduct.price);
 
       $(".delete_button").click(() => confirmDelete(currentProduct, table_row, thisRowIndex));
@@ -191,7 +191,7 @@ function confirmDelete (product, row, index){
       debugger;
       inventory_array.splice(index,1);
       row.remove();
-      deleteFromDB(product);
+      deleteFromDB(product.id);
       $('.delete_button').off();
 }
 
