@@ -40,27 +40,27 @@
         <h4>Add Item</h4>
         <div class="form-group input-group">
             <span class = "input-group-addon">
-                <span class="glyphicon glyphicon-user"></span>
+                <span class="glyphicon glyphicon-search"></span>
             </span>
             <input type="text" class="form-control" name="title" id="title" placeholder="Title">
         </div>
         <div class="form-group input-group">
             <span class="input-group-addon">
-                <span class="glyphicon glyphicon-list-alt"></span>
+                <span class="glyphicon glyphicon-info-sign"></span>
             </span>
             <input type="text" class="form-control" name="description" id="description"
                    placeholder="Description">
         </div>
         <div class="form-group input-group">
             <span class="input-group-addon">
-                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-stats"></span>
             </span>
             <input type="text" class="form-control" name="quantity" id="quantity"
                    placeholder="Quantity">
         </div>
         <div class="form-group input-group">
             <span class="input-group-addon">
-                <span class="glyphicon glyphicon-education"></span>
+                <span class="glyphicon glyphicon-tag"></span>
             </span>
             <input type="text" class="form-control" name="price" id="price"
                    placeholder="Price">
@@ -96,10 +96,35 @@
           <h4 class="modal-title">Are you sure you want to delete this item?</h4>
         </div>
         <div class="modal-body">
-          <p class = "product-title"></p>
-          <p class = "product-description"></p>
-          <p class = "quantity"></p>
-          <p class = "price"></p>
+          
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input type="text" class="form-control product-title" name="productTitle" placeholder="Product Title" disabled>
+                </div>
+
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </span>
+                    <input type="text" class="form-control product-description" name="productDescription" placeholder="Product Description" disabled>
+                </div>
+                
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-stats"></span>
+                    </span>
+                    <input type="text" class="form-control quantity" name="quantity" placeholder="Quantity" disabled>
+                </div>
+
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-tag"></span>
+                    </span>
+                    <input type="text" class="form-control price" name="price" placeholder="Price" disabled>
+                </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger delete_button" data-dismiss="modal">Delete</button>
