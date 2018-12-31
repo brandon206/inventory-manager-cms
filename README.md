@@ -1,4 +1,4 @@
-# SGT - Student Grade Table
+# Inventory Manager
 
 ## Technologies Used
 
