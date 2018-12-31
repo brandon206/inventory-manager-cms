@@ -52,7 +52,7 @@ function loadData () {
                   // else{
                         inventory_array = response.data;
                         console.log("this is the student array: ",inventory_array);
-                        updateStudentList(inventory_array);
+                        updateInventoryList(inventory_array);
                         console.log(response);
                         return(response);
                   // }
@@ -123,11 +123,10 @@ function addInventory(){
       inventoryObj.product_description = $("#description").val();
       inventoryObj.quantity = $("#quantity").val();
       inventoryObj.price = $("#price").val();
-      console.log("===Inventory Object=== ", inventoryObj);
       inventory_array.push(inventoryObj);
-      addStudentToDB (inventoryObj.id,inventoryObj.product_title,inventoryObj.product_description,inventoryObj.quantity,inventoryObj.price);
+      addProductToDB (inventoryObj.id,inventoryObj.product_title,inventoryObj.product_description,inventoryObj.quantity,inventoryObj.price);
 
-      updateStudentList (inventory_array);
+      updateInventoryList (inventory_array);
       clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
@@ -145,8 +144,7 @@ function clearAddInventoryFormInputs(){
  * into the .student_list tbody
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
-function renderStudentOnDom(inventoryObject){
-      console.log("this is the inventoryOBject: ", inventoryObject);
+function renderProductOnDom(inventoryObject){
       var table_row = $("<tr>");
       var title_TD = $("<td>").text(inventoryObject.product_title);
       var description_TD = $("<td>").text(inventoryObject.product_description);
@@ -164,20 +162,29 @@ function renderStudentOnDom(inventoryObject){
             // }
       });
 
+      var update_button = $("<button>", {
+            text: 'update',
+            'class': 'btn btn-warning',
+            'data-toggle': 'modal',
+            'data-target': '#updateModal'
+      });
+
       $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
 
-      op_TD.append(delete_button);
+      $(update_button).click(() => handleUpdateClick(table_row, inventoryObject));
 
-      var currentStudentRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
+      op_TD.append(delete_button, update_button);
+
+      var currentProductRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
       $("tbody").append(table_row);     
 }
 
 function handleDeleteClick (table_row, inventoryObject){
-      debugger;
       var thisRowIndex = $(table_row).closest("tr").index();
       var currentProduct = inventory_array[thisRowIndex];
       var index = inventory_array.indexOf(inventoryObject);
 
+      $("#deleteModal .modal-title").text(`Edit Product: ${currentProduct.product_title}`);
       $("#deleteModal .product-title").val(currentProduct.product_title);
       $("#deleteModal .product-title").val(currentProduct.product_title);
       $("#deleteModal .product-description").val(currentProduct.product_description);
@@ -188,11 +195,52 @@ function handleDeleteClick (table_row, inventoryObject){
 }
 
 function confirmDelete (product, row, index){
-      debugger;
       inventory_array.splice(index,1);
       row.remove();
       deleteFromDB(product.id);
       $('.delete_button').off();
+}
+
+function handleUpdateClick(table_row, inventoryObj) {
+      var thisRowIndex = $(table_row).closest("tr").index();
+      var currentProduct = inventory_array[thisRowIndex];
+    
+      $("#updateModal .modal-title").text(`Edit Product: ${currentProduct.product_title}`);
+      $("#updateModal .product-title").val(currentProduct.product_title);
+      $("#updateModal .product-description").val(currentProduct.product_description);
+      $("#updateModal .quantity").val(currentProduct.quantity);
+      $("#updateModal .price").val(currentProduct.price);
+    
+      $(".update_button").click(() => confirmUpdate(thisRowIndex));
+
+}
+
+
+function confirmUpdate (index){
+      $(".update_button").off();
+      var updatedProduct = {};
+      updatedProduct.product_title = $("#updateModal .product-title").val();
+      updatedProduct.product_description = $("#updateModal .product-description").val();
+      updatedProduct.quantity = $("#updateModal .quantity").val();
+      updatedProduct.price =$("#updateModal .price").val();
+      validateUpdateProduct(updatedProduct, index);
+}
+
+function validateUpdateProduct (updatedProduct, index) {
+      var validationCheck = {
+            product_title: true,
+            product_description: true,
+            quantity: true,
+            price: true
+          };
+        
+          if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
+            inventory_array[index].product_title = updatedProduct.product_title;
+            inventory_array[index].product_description = updatedProduct.product_description;
+            inventory_array[index].quantity = updatedProduct.quantity;
+            inventory_array[index].price = updatedProduct.price;
+            updateProductToDB(inventory_array[index]);
+          }
 }
 
 /***************************************************************************************************
@@ -201,10 +249,10 @@ function confirmDelete (product, row, index){
  * @returns {undefined} none
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
-function updateStudentList(inventory_array){
+function updateInventoryList(inventory_array){
       $("tbody").empty();
       for(var i = 0; i < inventory_array.length; i++){
-            renderStudentOnDom(inventory_array[i]);
+            renderProductOnDom(inventory_array[i]);
       }
       calculateGradeAverage (inventory_array);
 }
@@ -241,8 +289,8 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-function addStudentToDB (id,product_title,product_description,quantity,price){
-      var student_api_object = {
+function addProductToDB (id,product_title,product_description,quantity,price){
+      var inventory_api_object = {
             url: "api/access.php",
             method: "POST",
             data: {
@@ -265,7 +313,7 @@ function addStudentToDB (id,product_title,product_description,quantity,price){
                   $('#errorModal').modal('show');
             }
       };
-      $.ajax(student_api_object);
+      $.ajax(inventory_api_object);
 }
 
 function deleteFromDB (idIndex) {
@@ -301,3 +349,28 @@ function deleteFromDB (idIndex) {
       $.ajax(inventory_api_object);
       return;
 }
+
+function updateProductToDB(product) {
+      var inventory_api_object = {
+            url: "api/access.php",
+            method: "POST",
+            dataType: "json",
+            data: {
+              action: "update",
+              product_title: product.product_title,
+              product_description: product.product_description,
+              quantity: product.quantity,
+              price: product.price,
+              id: product.id
+            },
+            success: function(response) {
+              console.log(response);
+              updateInventoryList(inventory_array);
+              return(response);
+            },
+            error: function(response) {
+                  console.log("error message: ",response);
+            }
+      };
+      $.ajax(inventory_api_object);
+    }
