@@ -146,7 +146,6 @@ function clearAddInventoryFormInputs(){
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
 function renderStudentOnDom(inventoryObject){
-      console.log("this is the inventoryOBject: ", inventoryObject);
       var table_row = $("<tr>");
       var title_TD = $("<td>").text(inventoryObject.product_title);
       var description_TD = $("<td>").text(inventoryObject.product_description);
@@ -164,16 +163,24 @@ function renderStudentOnDom(inventoryObject){
             // }
       });
 
+      var update_button = $("<button>", {
+            text: 'update',
+            'class': 'btn btn-warning',
+            'data-toggle': 'modal',
+            'data-target': '#updateModal'
+      });
+
       $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
 
-      op_TD.append(delete_button);
+      $(update_button).click(() => handleUpdateClick(table_row, inventoryObject));
+
+      op_TD.append(delete_button, update_button);
 
       var currentStudentRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
       $("tbody").append(table_row);     
 }
 
 function handleDeleteClick (table_row, inventoryObject){
-      debugger;
       var thisRowIndex = $(table_row).closest("tr").index();
       var currentProduct = inventory_array[thisRowIndex];
       var index = inventory_array.indexOf(inventoryObject);
@@ -188,12 +195,28 @@ function handleDeleteClick (table_row, inventoryObject){
 }
 
 function confirmDelete (product, row, index){
-      debugger;
       inventory_array.splice(index,1);
       row.remove();
       deleteFromDB(product.id);
       $('.delete_button').off();
 }
+
+function handleUpdateClick(table_row, inventoryObject) {
+      var thisRowIndex = $(table_row).closest("tr").index();
+      var currentProduct = inventory_array[thisRowIndex];
+    
+      $("#updateModal .modal-title").text(`Edit Student: ${currentProduct.title}`);
+      $("#updateModal .product-title").val(currentProduct.product_title);
+      $("#updateModal .product-description").val(currentProduct.product_description);
+      $("#updateModal .quantity").val(currentProduct.quantity);
+      $("#updateModal .price").val(currentProduct.price);
+    
+      // $(".update-button").off();
+      $(".update-button").click(() => confirmUpdateClick(thisRowIndex));
+      // $("updateModal .invalid-input").hide();
+      // $("#updateModal").modal("show");
+    
+    }
 
 /***************************************************************************************************
  * updateStudentList - centralized function to update the average and call student list update
