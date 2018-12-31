@@ -10,7 +10,7 @@ $quantity = $_POST['quantity'];
 $price = $_POST['price'];
 $output = [
     'success' => false,
-    'error' => [],
+    'errors' => [],
 ];
 
 $query = "INSERT INTO `Inventory` SET

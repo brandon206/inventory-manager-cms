@@ -24,6 +24,9 @@ switch($_POST['action']){
     case 'delete':
         include('CRUD/delete.php');
         break;
+    case 'update':
+        include('CRUD/update.php');
+        break;
     default:
         $output['errors'][] = 'invalid action';
 }
