@@ -239,7 +239,9 @@ function validateUpdateProduct (updatedProduct, index) {
           };
       
       var validProductTitle = /^[a-zA-Z0-9 _]+$/;
-      var validProductDescription;
+      var validProductDescription = /^[^<>]+$/;
+      var validQuantity = /^[1-9]\d*$/;
+      var validPrice = /^\d+(\.\d{1,2})?$/;
 
       if(updatedProduct.product_title.length > 30){
             $("#updateModal .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
@@ -249,6 +251,36 @@ function validateUpdateProduct (updatedProduct, index) {
       } else {
             $("#updateModal .invalid-product_title").text("Please enter a valid product title").css("display", "block");
             validationCheck.product_title = false;
+      }
+
+      if(updatedProduct.product_description.length > 100){
+            $("#updateModal .invalid-product_description").text("Maximum characters for product description is 100.").css("display", "block");
+            validationCheck.product_description = false;
+      } else if (validProductDescription.test(updatedProduct.product_description)){
+            $("#updateModal .invalid-product_description").css("display", "none")
+      } else {
+            $("#updateModal .invalid-product_description").text("Please enter a valid product description").css("display", "block");
+            validationCheck.product_description = false;
+      }
+
+      if(updatedProduct.quantity.length > 9){
+            $("#updateModal .invalid-quantity").text("Maximum number of digits for quantity is 9.").css("display", "block");
+            validationCheck.quantity = false;
+      } else if (validQuantity.test(updatedProduct.quantity)){
+            $("#updateModal .invalid-quantity").css("display", "none")
+      } else {
+            $("#updateModal .invalid-quantity").text("Please enter a valid quantity").css("display", "block");
+            validationCheck.quantity = false;
+      }
+
+      if(updatedProduct.price.length > 12){
+            $("#updateModal .invalid-price").text("Maximum number of digits for price is 12.").css("display", "block");
+            validationCheck.price = false;
+      } else if (validPrice.test(updatedProduct.price)){
+            $("#updateModal .invalid-price").css("display", "none")
+      } else {
+            $("#updateModal .invalid-price").text("Please enter a valid price").css("display", "block");
+            validationCheck.price = false;
       }
 
 
