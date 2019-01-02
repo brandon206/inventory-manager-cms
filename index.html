@@ -146,7 +146,8 @@
           <h4 class="modal-title">Are you sure you want to update this item?</h4>
         </div>
         <div class="modal-body">
-          
+                
+                <div class="invalid-input invalid-product_title text-danger"></div>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-search"></span>
@@ -154,6 +155,7 @@
                     <input type="text" class="form-control product-title" name="productTitle" placeholder="Product Title">
                 </div>
 
+                <div class="invalid-input invalid-product_description text-danger"></div>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -161,13 +163,15 @@
                     <input type="text" class="form-control product-description" name="productDescription" placeholder="Product Description">
                 </div>
                 
+                <div class="invalid-input invalid-quantity text-danger"></div>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-stats"></span>
                     </span>
                     <input type="text" class="form-control quantity" name="quantity" placeholder="Quantity">
                 </div>
-
+                
+                <div class="invalid-input invalid-price text-danger"></div>
                 <div class="form-group input-group">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-tag"></span>
@@ -177,7 +181,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-warning update_button" data-dismiss="modal">Save Update</button>
+          <button type="button" class="btn btn-warning update_button" >Save Update</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>
