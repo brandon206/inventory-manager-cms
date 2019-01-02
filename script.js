@@ -72,6 +72,8 @@ function addClickHandlersToElements(){
       $("#addButton").on("click",handleAddClicked);
       $("#cancelButton").on("click",handleCancelClick);
       $("#getDataFromServerButton").on("click",handleGetDataClick);
+      $("tbody").on("click", "td .btn-danger", handleDeleteClick);
+      $("tbody").on("click", "td .btn-warning", handleUpdateClick);
 }
 
 /***************************************************************************************************
@@ -165,13 +167,12 @@ function renderProductOnDom(inventoryObject){
       var update_button = $("<button>", {
             text: 'update',
             'class': 'btn btn-warning',
-            'data-toggle': 'modal',
-            'data-target': '#updateModal'
+            
       });
 
       $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
 
-      $(update_button).click(() => handleUpdateClick(table_row, inventoryObject));
+      // $(update_button).click(() => handleUpdateClick(table_row, inventoryObject));
 
       op_TD.append(delete_button, update_button);
 
@@ -201,23 +202,26 @@ function confirmDelete (product, row, index){
       $('.delete_button').off();
 }
 
-function handleUpdateClick(table_row, inventoryObj) {
-      var thisRowIndex = $(table_row).closest("tr").index();
+function handleUpdateClick() {
+      var currentUpdateButton = $(this);
+      var thisRowIndex = currentUpdateButton.closest("tr").index();
       var currentProduct = inventory_array[thisRowIndex];
     
-      $("#updateModal .modal-title").text(`Edit Product: ${currentProduct.product_title}`);
       $("#updateModal .product-title").val(currentProduct.product_title);
       $("#updateModal .product-description").val(currentProduct.product_description);
       $("#updateModal .quantity").val(currentProduct.quantity);
       $("#updateModal .price").val(currentProduct.price);
-    
+      
+      $(".update_button").off();
       $(".update_button").click(() => confirmUpdate(thisRowIndex));
-
+      $("#updateModal .invalid-input").hide();
+      $("#updateModal").modal("show");
+      
 }
 
 
 function confirmUpdate (index){
-      $(".update_button").off();
+      
       var updatedProduct = {};
       updatedProduct.product_title = $("#updateModal .product-title").val();
       updatedProduct.product_description = $("#updateModal .product-description").val();
@@ -233,14 +237,31 @@ function validateUpdateProduct (updatedProduct, index) {
             quantity: true,
             price: true
           };
-        
-          if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
+      
+      var validProductTitle = /^[a-zA-Z0-9 _]+$/;
+      var validProductDescription;
+
+      if(updatedProduct.product_title.length > 30){
+            $("#updateModal .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
+            validationCheck.product_title = false;
+      } else if (validProductTitle.test(updatedProduct.product_title)){
+            $("#updateModal .invalid-product_title").css("display", "none")
+      } else {
+            $("#updateModal .invalid-product_title").text("Please enter a valid product title").css("display", "block");
+            validationCheck.product_title = false;
+      }
+
+
+      
+          
+      if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
             inventory_array[index].product_title = updatedProduct.product_title;
             inventory_array[index].product_description = updatedProduct.product_description;
             inventory_array[index].quantity = updatedProduct.quantity;
             inventory_array[index].price = updatedProduct.price;
             updateProductToDB(inventory_array[index]);
-          }
+            $("#updateModal").modal("hide");
+      }
 }
 
 /***************************************************************************************************
