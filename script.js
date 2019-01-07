@@ -123,7 +123,7 @@ function addInventory(){
       inventoryObj.product_description = $("#description").val();
       inventoryObj.quantity = $("#quantity").val();
       inventoryObj.price = $("#price").val();
-      inventoryObj.price = `$` + inventoryObj.price;
+      // inventoryObj.price = `$` + inventoryObj.price;
 
       validateAddProduct (inventoryObj);
 }
@@ -139,7 +139,7 @@ function validateAddProduct (addedProduct) {
       var validProductTitle = /^[a-zA-Z0-9 _]+$/;
       var validProductDescription = /^[^<>]+$/;
       var validQuantity = /^[1-9]\d*$/;
-      var validPrice = /^\d+(\.\d{1,2})?$/;
+      var validPrice = /^(\$)?\d+(\.\d{1,2})?$/;
 
       if(addedProduct.product_title.length > 30){
             $(".product-addition .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
@@ -182,15 +182,11 @@ function validateAddProduct (addedProduct) {
       }
           
       if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
-            inventory_array[index].product_title = addedProduct.product_title;
-            inventory_array[index].product_description = addedProduct.product_description;
-            inventory_array[index].quantity = addedProduct.quantity;
-            inventory_array[index].price = addedProduct.price;
-
-            inventory_array.push(inventoryObj);
+            debugger;
+            inventory_array.push(addedProduct);
             clearAddInventoryFormInputs ();
+            addProductToDB (addedProduct);
             updateInventoryList (inventory_array);
-            addProductToDB (inventory_array);
       }
 }
 /***************************************************************************************************
@@ -213,7 +209,7 @@ function renderProductOnDom(inventoryObject){
       var title_TD = $("<td>").text(inventoryObject.product_title);
       var description_TD = $("<td>").text(inventoryObject.product_description);
       var quantity_TD = $("<td>").text(inventoryObject.quantity);
-      var price_TD = $("<td>").text(inventoryObject.price);
+      var price_TD = $("<td>").text(`$${inventoryObject.price}`);
       var op_TD = $("<td>");
       
       var delete_button = $("<button>",{
@@ -394,22 +390,23 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-function addProductToDB (id,product_title,product_description,quantity,price){
+function addProductToDB (addedProduct){
       var inventory_api_object = {
             url: "api/access.php",
             method: "POST",
             data: {
                   // api_key: "IluXv1RI8a",
-                  product_title: product_title,
-                  product_description: product_description,
-                  quantity: quantity,
-                  price: price,
+                  product_title: addedProduct.product_title,
+                  product_description: addedProduct.product_description,
+                  quantity: addedProduct.quantity,
+                  price: addedProduct.price,
                   'action' : 'create'
                   // "force-failure": "server"
             },
             dataType: "json",
             success: function (response) {
                   console.log(response);
+                  console.log(response.responseText);
                   return(response);
             },
             error: function (response) {
