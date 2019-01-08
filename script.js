@@ -72,7 +72,7 @@ function addClickHandlersToElements(){
       $("#addButton").on("click",handleAddClicked);
       $("#cancelButton").on("click",handleCancelClick);
       $("#getDataFromServerButton").on("click",handleGetDataClick);
-      $("tbody").on("click", "td .btn-danger", handleDeleteClick);
+      // $("tbody").on("click", "td .btn-danger", handleDeleteClick);
       $("tbody").on("click", "td .btn-warning", handleUpdateClick);
 }
 
@@ -141,6 +141,11 @@ function validateAddProduct (addedProduct) {
       var validQuantity = /^[1-9]\d*$/;
       var validPrice = /^(\$)?\d+(\.\d{1,2})?$/;
 
+      
+      if(addedProduct.price.indexOf("$") > -1){
+            addedProduct.price = addedProduct.price.slice(1,addedProduct.price.length);
+      }
+
       if(addedProduct.product_title.length > 30){
             $(".product-addition .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
             validationCheck.product_title = false;
@@ -182,7 +187,7 @@ function validateAddProduct (addedProduct) {
       }
           
       if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
-            debugger;
+            // debugger;
             inventory_array.push(addedProduct);
             clearAddInventoryFormInputs ();
             addProductToDB (addedProduct);
@@ -293,6 +298,10 @@ function validateUpdateProduct (updatedProduct, index) {
       var validProductDescription = /^[^<>]+$/;
       var validQuantity = /^[1-9]\d*$/;
       var validPrice = /^\d+(\.\d{1,2})?$/;
+
+      if(addedProduct.price.indexOf("$") > -1){
+            addedProduct.price = addedProduct.price.slice(1,addedProduct.price.length);
+      }
 
       if(updatedProduct.product_title.length > 30){
             $("#updateModal .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
