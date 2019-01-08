@@ -72,7 +72,7 @@ function addClickHandlersToElements(){
       $("#addButton").on("click",handleAddClicked);
       $("#cancelButton").on("click",handleCancelClick);
       $("#getDataFromServerButton").on("click",handleGetDataClick);
-      $("tbody").on("click", "td .btn-danger", handleDeleteClick);
+      // $("tbody").on("click", "td .btn-danger", handleDeleteClick);
       $("tbody").on("click", "td .btn-warning", handleUpdateClick);
 }
 
@@ -82,10 +82,8 @@ function addClickHandlersToElements(){
  * @return: 
        none
  */
-function handleAddClicked(inventoryObj){
-      console.log("add was clicked");
+function handleAddClicked(){
       addInventory ();
-      clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
@@ -125,11 +123,76 @@ function addInventory(){
       inventoryObj.product_description = $("#description").val();
       inventoryObj.quantity = $("#quantity").val();
       inventoryObj.price = $("#price").val();
-      inventory_array.push(inventoryObj);
-      addProductToDB (inventoryObj.id,inventoryObj.product_title,inventoryObj.product_description,inventoryObj.quantity,inventoryObj.price);
+      // inventoryObj.price = `$` + inventoryObj.price;
 
-      updateInventoryList (inventory_array);
-      clearAddInventoryFormInputs ();
+      validateAddProduct (inventoryObj);
+}
+
+function validateAddProduct (addedProduct) {
+      var validationCheck = {
+            product_title: true,
+            product_description: true,
+            quantity: true,
+            price: true
+          };
+      
+      var validProductTitle = /^[a-zA-Z0-9 _]+$/;
+      var validProductDescription = /^[^<>]+$/;
+      var validQuantity = /^[1-9]\d*$/;
+      var validPrice = /^(\$)?\d+(\.\d{1,2})?$/;
+
+      
+      if(addedProduct.price.indexOf("$") > -1){
+            addedProduct.price = addedProduct.price.slice(1,addedProduct.price.length);
+      }
+
+      if(addedProduct.product_title.length > 30){
+            $(".product-addition .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
+            validationCheck.product_title = false;
+      } else if (validProductTitle.test(addedProduct.product_title)){
+            $(".product-addition .invalid-product_title").css("display", "none")
+      } else {
+            $(".product-addition .invalid-product_title").text("Please enter a valid product title").css("display", "block");
+            validationCheck.product_title = false;
+      }
+
+      if(addedProduct.product_description.length > 100){
+            $(".product-addition .invalid-product_description").text("Maximum characters for product description is 100.").css("display", "block");
+            validationCheck.product_description = false;
+      } else if (validProductDescription.test(addedProduct.product_description)){
+            $(".product-addition .invalid-product_description").css("display", "none")
+      } else {
+            $(".product-addition .invalid-product_description").text("Please enter a valid product description").css("display", "block");
+            validationCheck.product_description = false;
+      }
+
+      if(addedProduct.quantity.length > 9){
+            $(".product-addition .invalid-quantity").text("Maximum number of digits for quantity is 9.").css("display", "block");
+            validationCheck.quantity = false;
+      } else if (validQuantity.test(addedProduct.quantity)){
+            $(".product-addition .invalid-quantity").css("display", "none")
+      } else {
+            $(".product-addition .invalid-quantity").text("Please enter a valid quantity i.e. 44").css("display", "block");
+            validationCheck.quantity = false;
+      }
+
+      if(addedProduct.price.length > 12){
+            $(".product-addition .invalid-price").text("Maximum number of digits for price is 12.").css("display", "block");
+            validationCheck.price = false;
+      } else if (validPrice.test(addedProduct.price)){
+            $(".product-addition .invalid-price").css("display", "none")
+      } else {
+            $(".product-addition .invalid-price").text("Please enter a valid price i.e. $16.99").css("display", "block");
+            validationCheck.price = false;
+      }
+          
+      if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
+            // debugger;
+            inventory_array.push(addedProduct);
+            clearAddInventoryFormInputs ();
+            addProductToDB (addedProduct);
+            updateInventoryList (inventory_array);
+      }
 }
 /***************************************************************************************************
  * clearAddStudentForm - clears out the form values based on inputIds variable
@@ -151,28 +214,22 @@ function renderProductOnDom(inventoryObject){
       var title_TD = $("<td>").text(inventoryObject.product_title);
       var description_TD = $("<td>").text(inventoryObject.product_description);
       var quantity_TD = $("<td>").text(inventoryObject.quantity);
-      var price_TD = $("<td>").text(inventoryObject.price);
+      var price_TD = $("<td>").text(`$${inventoryObject.price}`);
       var op_TD = $("<td>");
       
       var delete_button = $("<button>",{
             text: "delete",
             "class": "btn btn-danger",
             "data-toggle" : "modal",
-            "data-target" : "#deleteModal",
-            // on: {
-            //       click: handleDeleteClick(table_row, inventoryObject)
-            // }
+            "data-target" : "#deleteModal"
       });
 
       var update_button = $("<button>", {
             text: 'update',
-            'class': 'btn btn-warning',
-            
+            'class': 'btn btn-warning'
       });
 
       $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
-
-      // $(update_button).click(() => handleUpdateClick(table_row, inventoryObject));
 
       op_TD.append(delete_button, update_button);
 
@@ -219,7 +276,6 @@ function handleUpdateClick() {
       
 }
 
-
 function confirmUpdate (index){
       
       var updatedProduct = {};
@@ -242,6 +298,10 @@ function validateUpdateProduct (updatedProduct, index) {
       var validProductDescription = /^[^<>]+$/;
       var validQuantity = /^[1-9]\d*$/;
       var validPrice = /^\d+(\.\d{1,2})?$/;
+
+      if(addedProduct.price.indexOf("$") > -1){
+            addedProduct.price = addedProduct.price.slice(1,addedProduct.price.length);
+      }
 
       if(updatedProduct.product_title.length > 30){
             $("#updateModal .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
@@ -282,9 +342,6 @@ function validateUpdateProduct (updatedProduct, index) {
             $("#updateModal .invalid-price").text("Please enter a valid price").css("display", "block");
             validationCheck.price = false;
       }
-
-
-      
           
       if(validationCheck.product_title && validationCheck.product_description && validationCheck.quantity && validationCheck.price) {
             inventory_array[index].product_title = updatedProduct.product_title;
@@ -342,22 +399,23 @@ function renderGradeAverage(average){
       $(".avgGrade").text(average);
 }
 
-function addProductToDB (id,product_title,product_description,quantity,price){
+function addProductToDB (addedProduct){
       var inventory_api_object = {
             url: "api/access.php",
             method: "POST",
             data: {
                   // api_key: "IluXv1RI8a",
-                  product_title: product_title,
-                  product_description: product_description,
-                  quantity: quantity,
-                  price: price,
+                  product_title: addedProduct.product_title,
+                  product_description: addedProduct.product_description,
+                  quantity: addedProduct.quantity,
+                  price: addedProduct.price,
                   'action' : 'create'
                   // "force-failure": "server"
             },
             dataType: "json",
             success: function (response) {
                   console.log(response);
+                  console.log(response.responseText);
                   return(response);
             },
             error: function (response) {
