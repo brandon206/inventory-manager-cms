@@ -299,8 +299,8 @@ function validateUpdateProduct (updatedProduct, index) {
       var validQuantity = /^[1-9]\d*$/;
       var validPrice = /^\d+(\.\d{1,2})?$/;
 
-      if(addedProduct.price.indexOf("$") > -1){
-            addedProduct.price = addedProduct.price.slice(1,addedProduct.price.length);
+      if(updatedProduct.price.indexOf("$") > -1){
+            updatedProduct.price = updatedProduct.price.slice(1,updatedProduct.price.length);
       }
 
       if(updatedProduct.product_title.length > 30){
