@@ -219,24 +219,41 @@ function renderProductOnDom(inventoryObject){
       var quantity_TD = $("<td>").text(inventoryObject.quantity).css({'word-break':'break-all', 'word-wrap':'break-word'});
       var price_TD = $("<td>").text(`$${inventoryObject.price}`);
       var edit_TD = $("<td>").css({'word-break':'break-all', 'word-wrap':'break-word'});
-      // var update_TD = $("<td>");
-      
-      var delete_button = $("<button>",{
-            text: "delete",
-            "class": "btn btn-danger",
+
+      var deleteButton = $("<button>", {
+            class: "btn btn-danger",
             "data-toggle" : "modal",
             "data-target" : "#deleteModal"
       }).css({"margin-bottom": "10px", "margin-right":"10px"});
-
-      var update_button = $("<button>", {
-            text: 'update',
-            'class': 'btn btn-warning'
+      
+      var deleteIcon = $("<span>", {
+            class: "glyphicon glyphicon-trash visible-xs"
+      });
+      
+      var deleteText = $("<span>", {
+            text: "Delete",
+            class: "visible-sm visible-md visible-lg"
+      });
+      
+      var updateButton = $("<button>", {
+            class: "btn btn-warning",
       }).css({"margin-bottom": "10px", "margin-right":"10px"});
+      
+      var updateIcon = $("<span>", {
+            class: "glyphicon glyphicon-pencil visible-xs"
+      });
+      
+      var updateText = $("<span>", {
+            text: "Update",
+            class: "visible-sm visible-md visible-lg"
+      });
+        
+      deleteButton.append(deleteIcon, deleteText);
+      updateButton.append(updateIcon, updateText);
 
-      $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
+      $(deleteButton).click(() => handleDeleteClick(table_row, inventoryObject));
 
-      edit_TD.append(delete_button, update_button);
-      // update_TD.append(update_button);
+      edit_TD.append(deleteButton, updateButton);
 
       var currentProductRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD, edit_TD);
       $("tbody").append(table_row);     
