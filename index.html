@@ -14,23 +14,26 @@
     <div class="col-sm-12 col-md-12">
         <!-- only show this element when the isnt on mobile -->
         <h1 class = "hidden-xs">Inventory Manager
-            <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small>
+            <!-- <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small> -->
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
         <h3 class = "visible-xs">Inventory Manager
-            <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small>
+            <!-- <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small> -->
         </h3>
+        <hr>
     </div>
     <div class="student-add-form col-sm-4 col-sm-push-8 product-addition">
         <h4>Add Item</h4>
+        <div class="invalid-input invalid-product_title text-danger"></div>
         <div class="form-group input-group">
             <span class = "input-group-addon">
                 <span class="glyphicon glyphicon-search"></span>
             </span>
             <input type="text" class="form-control" name="title" id="title" placeholder="Title">
         </div>
-        <p class="invalid-input invalid-product_title text-danger"></p>
+        <!-- <p class="invalid-input invalid-product_title text-danger"></p> -->
 
+        <div class="invalid-input invalid-product_description text-danger"></div>
         <div class="form-group input-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-info-sign"></span>
@@ -38,8 +41,9 @@
             <input type="text" class="form-control" name="description" id="description"
                    placeholder="Description">
         </div>
-        <p class="invalid-input invalid-product_description text-danger"></p>
+        <!-- <p class="invalid-input invalid-product_description text-danger"></p> -->
 
+        <div class="invalid-input invalid-quantity text-danger"></div>
         <div class="form-group input-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-stats"></span>
@@ -47,8 +51,9 @@
             <input type="text" class="form-control" name="quantity" id="quantity"
                    placeholder="Quantity">
         </div>
-        <p class="invalid-input invalid-quantity text-danger"></p>
+        <!-- <p class="invalid-input invalid-quantity text-danger"></p> -->
 
+        <div class="invalid-input invalid-price text-danger"></div>
         <div class="form-group input-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-tag"></span>
@@ -56,7 +61,7 @@
             <input type="text" class="form-control" name="price" id="price"
                    placeholder="Price">
         </div>
-        <p class="invalid-input invalid-price text-danger"></p>
+        <!-- <p class="invalid-input invalid-price text-danger"></p> -->
 
         <button type="button" id= "addButton" class="btn btn-success" onclick="">Add</button>
         <button type="button" id= "cancelButton" class="btn btn-default" onclick="">Cancel</button>
@@ -70,7 +75,7 @@
                 <th>Description</th>
                 <th>Quantity</th>
                 <th>Price</th>
-                <th>Operations</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>

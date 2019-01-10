@@ -107,7 +107,10 @@ function handleGetDataClick () {
 }
 
 function handleCancelClick(){
-      console.log("cancel was clicked");
+      $(".product-addition .invalid-product_title").css("display", "none");
+      $(".product-addition .invalid-product_description").css("display", "none");
+      $(".product-addition .invalid-quantity").css("display", "none");
+      $(".product-addition .invalid-price").css("display", "none");
       clearAddInventoryFormInputs ();
 }
 /***************************************************************************************************
@@ -152,7 +155,7 @@ function validateAddProduct (addedProduct) {
       } else if (validProductTitle.test(addedProduct.product_title)){
             $(".product-addition .invalid-product_title").css("display", "none")
       } else {
-            $(".product-addition .invalid-product_title").text("Please enter a valid product title").css("display", "block");
+            $(".product-addition .invalid-product_title").text("Please enter a valid product title that consists of only letters or numbers").css("display", "block");
             validationCheck.product_title = false;
       }
 
@@ -162,7 +165,7 @@ function validateAddProduct (addedProduct) {
       } else if (validProductDescription.test(addedProduct.product_description)){
             $(".product-addition .invalid-product_description").css("display", "none")
       } else {
-            $(".product-addition .invalid-product_description").text("Please enter a valid product description").css("display", "block");
+            $(".product-addition .invalid-product_description").text("Please enter a valid product description that consists of only letters or numbers").css("display", "block");
             validationCheck.product_description = false;
       }
 
@@ -211,29 +214,31 @@ function clearAddInventoryFormInputs(){
  */
 function renderProductOnDom(inventoryObject){
       var table_row = $("<tr>");
-      var title_TD = $("<td>").text(inventoryObject.product_title);
-      var description_TD = $("<td>").text(inventoryObject.product_description);
-      var quantity_TD = $("<td>").text(inventoryObject.quantity);
+      var title_TD = $("<td>").text(inventoryObject.product_title).css({'word-break':'break-all', 'word-wrap':'break-word'});
+      var description_TD = $("<td>").text(inventoryObject.product_description).css({'word-break':'break-all', 'word-wrap':'break-word'});
+      var quantity_TD = $("<td>").text(inventoryObject.quantity).css({'word-break':'break-all', 'word-wrap':'break-word'});
       var price_TD = $("<td>").text(`$${inventoryObject.price}`);
-      var op_TD = $("<td>");
+      var edit_TD = $("<td>").css({'word-break':'break-all', 'word-wrap':'break-word'});
+      // var update_TD = $("<td>");
       
       var delete_button = $("<button>",{
             text: "delete",
             "class": "btn btn-danger",
             "data-toggle" : "modal",
             "data-target" : "#deleteModal"
-      });
+      }).css({"margin-bottom": "10px", "margin-right":"10px"});
 
       var update_button = $("<button>", {
             text: 'update',
             'class': 'btn btn-warning'
-      });
+      }).css({"margin-bottom": "10px", "margin-right":"10px"});
 
       $(delete_button).click(() => handleDeleteClick(table_row, inventoryObject));
 
-      op_TD.append(delete_button, update_button);
+      edit_TD.append(delete_button, update_button);
+      // update_TD.append(update_button);
 
-      var currentProductRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD,op_TD);
+      var currentProductRow = $(table_row).append(title_TD,description_TD, quantity_TD, price_TD, edit_TD);
       $("tbody").append(table_row);     
 }
 
@@ -309,7 +314,7 @@ function validateUpdateProduct (updatedProduct, index) {
       } else if (validProductTitle.test(updatedProduct.product_title)){
             $("#updateModal .invalid-product_title").css("display", "none")
       } else {
-            $("#updateModal .invalid-product_title").text("Please enter a valid product title").css("display", "block");
+            $("#updateModal .invalid-product_title").text("Please enter a valid product title that consists of only letters or numbers").css("display", "block");
             validationCheck.product_title = false;
       }
 
@@ -319,7 +324,7 @@ function validateUpdateProduct (updatedProduct, index) {
       } else if (validProductDescription.test(updatedProduct.product_description)){
             $("#updateModal .invalid-product_description").css("display", "none")
       } else {
-            $("#updateModal .invalid-product_description").text("Please enter a valid product description").css("display", "block");
+            $("#updateModal .invalid-product_description").text("Please enter a valid product description that consists of only letters or numbers or special characters").css("display", "block");
             validationCheck.product_description = false;
       }
 
@@ -329,7 +334,7 @@ function validateUpdateProduct (updatedProduct, index) {
       } else if (validQuantity.test(updatedProduct.quantity)){
             $("#updateModal .invalid-quantity").css("display", "none")
       } else {
-            $("#updateModal .invalid-quantity").text("Please enter a valid quantity").css("display", "block");
+            $("#updateModal .invalid-quantity").text("Please enter a valid quantity number i.e. 44").css("display", "block");
             validationCheck.quantity = false;
       }
 
@@ -339,7 +344,7 @@ function validateUpdateProduct (updatedProduct, index) {
       } else if (validPrice.test(updatedProduct.price)){
             $("#updateModal .invalid-price").css("display", "none")
       } else {
-            $("#updateModal .invalid-price").text("Please enter a valid price").css("display", "block");
+            $("#updateModal .invalid-price").text("Please enter a valid price i.e. $16.99").css("display", "block");
             validationCheck.price = false;
       }
           
