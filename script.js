@@ -149,6 +149,10 @@ function validateAddProduct (addedProduct) {
             addedProduct.price = addedProduct.price.slice(1,addedProduct.price.length);
       }
 
+      if(addedProduct.price.indexOf(".") === -1){
+            addedProduct.price = `${addedProduct.price}.00`;
+      }
+
       if(addedProduct.product_title.length > 30){
             $(".product-addition .invalid-product_title").text("Maximum characters for product title is 30.").css("display", "block");
             validationCheck.product_title = false;
@@ -323,6 +327,10 @@ function validateUpdateProduct (updatedProduct, index) {
 
       if(updatedProduct.price.indexOf("$") > -1){
             updatedProduct.price = updatedProduct.price.slice(1,updatedProduct.price.length);
+      }
+
+      if(updatedProduct.price.indexOf(".") === -1){
+            updatedProduct.price = `${updatedProduct.price}.00`;
       }
 
       if(updatedProduct.product_title.length > 30){
