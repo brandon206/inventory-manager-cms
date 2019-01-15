@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="col-sm-12 col-md-12">
+        <!-- only show this element when the isnt on mobile -->
+        <h1 class = "hidden-xs">Inventory Manager
+            <!-- <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small> -->
+        </h1>
+        <!-- only show this element when the user gets to a mobile version -->
+        <h3 class = "visible-xs">Inventory Manager
+            <!-- <small class = "pull-right">Grade Average : <span class="avgGrade label label-default">0</span></small> -->
+        </h3>
+        <hr>
+    </div>
+    <div class="student-add-form col-sm-4 col-sm-push-8 product-addition">
+        <h4>Add Item</h4>
+        <div class="invalid-input invalid-product_title text-danger"></div>
+        <div class="form-group input-group">
+            <span class = "input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </span>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title">
+        </div>
+        <!-- <p class="invalid-input invalid-product_title text-danger"></p> -->
+
+        <div class="invalid-input invalid-product_description text-danger"></div>
+        <div class="form-group input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </span>
+            <input type="text" class="form-control" name="description" id="description"
+                   placeholder="Description">
+        </div>
+        <!-- <p class="invalid-input invalid-product_description text-danger"></p> -->
+
+        <div class="invalid-input invalid-quantity text-danger"></div>
+        <div class="form-group input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-stats"></span>
+            </span>
+            <input type="text" class="form-control" name="quantity" id="quantity"
+                   placeholder="Quantity">
+        </div>
+        <!-- <p class="invalid-input invalid-quantity text-danger"></p> -->
+
+        <div class="invalid-input invalid-price text-danger"></div>
+        <div class="form-group input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-tag"></span>
+            </span>
+            <input type="text" class="form-control" name="price" id="price"
+                   placeholder="Price">
+        </div>
+        <!-- <p class="invalid-input invalid-price text-danger"></p> -->
+
+        <button type="button" id= "addButton" class="btn btn-primary" onclick="">Add</button>
+        <button type="button" id= "cancelButton" class="btn btn-default" onclick="">Cancel</button>
+        <!-- <button type="button" id= "getDataFromServerButton" class="btn btn-default" onclick="">Get Data</button> -->
+    </div>
+    <div class="inventory-list-container col-sm-8 col-sm-pull-4">
+        <table class="inventory-list table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th class = "visible-sm visible-md visible-lg">Description</th>
+                <th class = "visible-xs">Desc.</th>
+                <th class = "visible-sm visible-md visible-lg">Quantity</th>
+                <th class = "visible-xs">Num Left</th>
+                <th class = "visible-sm visible-md visible-lg">Price</th>
+                <th class = "visible-xs">$$$</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Delete Modal -->
+<div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Delete Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Are you sure you want to delete this item?</h4>
+        </div>
+        <div class="modal-body">
+          
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input type="text" class="form-control product-title" name="productTitle" placeholder="Product Title" disabled>
+                </div>
+
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </span>
+                    <input type="text" class="form-control product-description" name="productDescription" placeholder="Product Description" disabled>
+                </div>
+                
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-stats"></span>
+                    </span>
+                    <input type="text" class="form-control quantity" name="quantity" placeholder="Quantity" disabled>
+                </div>
+
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-tag"></span>
+                    </span>
+                    <input type="text" class="form-control price" name="price" placeholder="Price" disabled>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger delete_button" data-dismiss="modal">Delete</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+      <!-- Update Modal -->
+<div id="updateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Update Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Are you sure you want to update this item?</h4>
+        </div>
+        <div class="modal-body">
+                
+                <div class="invalid-input invalid-product_title text-danger"></div>
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input type="text" class="form-control product-title" name="productTitle" placeholder="Product Title">
+                </div>
+
+                <div class="invalid-input invalid-product_description text-danger"></div>
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </span>
+                    <input type="text" class="form-control product-description" name="productDescription" placeholder="Product Description">
+                </div>
+                
+                <div class="invalid-input invalid-quantity text-danger"></div>
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-stats"></span>
+                    </span>
+                    <input type="text" class="form-control quantity" name="quantity" placeholder="Quantity">
+                </div>
+                
+                <div class="invalid-input invalid-price text-danger"></div>
+                <div class="form-group input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-tag"></span>
+                    </span>
+                    <input type="text" class="form-control price" name="price" placeholder="Price">
+                </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning update_button" >Save Update</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+    
+</div>
+</body>
+</html>
+
