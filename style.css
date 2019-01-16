@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 400px) {
     .table_row_items {
         word-break: break-all;
         word-wrap: break-word;
