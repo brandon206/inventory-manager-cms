@@ -88,8 +88,8 @@ function validateAddProduct (addedProduct) {
             validationCheck.product_title = false;
       }
 
-      if(addedProduct.product_description.length > 100){
-            $(".product-addition .invalid-product_description").text("Maximum characters for product description is 100.").css("display", "block");
+      if(addedProduct.product_description.length > 300){
+            $(".product-addition .invalid-product_description").text("Maximum characters for product description is 300.").css("display", "block");
             validationCheck.product_description = false;
       } else if (validProductDescription.test(addedProduct.product_description)){
             $(".product-addition .invalid-product_description").css("display", "none")
@@ -136,11 +136,11 @@ function clearAddInventoryFormInputs(){
 
 function renderProductOnDom(inventoryObject){
       var table_row = $("<tr>");
-      var title_TD = $("<td>").text(inventoryObject.product_title).css({'word-break':'break-all', 'word-wrap':'break-word'});
-      var description_TD = $("<td>").text(inventoryObject.product_description).css({'word-break':'break-all', 'word-wrap':'break-word'});
-      var quantity_TD = $("<td>").text(inventoryObject.quantity).css({'word-break':'break-all', 'word-wrap':'break-word'});
+      var title_TD = $("<td>").addClass("table_row_items").text(inventoryObject.product_title);
+      var description_TD = $("<td>").addClass("table_row_items").text(inventoryObject.product_description);
+      var quantity_TD = $("<td>").addClass("table_row_items").text(inventoryObject.quantity);
       var price_TD = $("<td>").text(`$${inventoryObject.price}`);
-      var edit_TD = $("<td>").css({'word-break':'break-all', 'word-wrap':'break-word'});
+      var edit_TD = $("<td>").addClass("center_button").css({'word-break':'break-all', 'word-wrap':'break-word'});
 
       var deleteButton = $("<button>", {
             class: "btn btn-danger",
@@ -258,8 +258,8 @@ function validateUpdateProduct (updatedProduct, index) {
             validationCheck.product_title = false;
       }
 
-      if(updatedProduct.product_description.length > 100){
-            $("#updateModal .invalid-product_description").text("Maximum characters for product description is 100.").css("display", "block");
+      if(updatedProduct.product_description.length > 300){
+            $("#updateModal .invalid-product_description").text("Maximum characters for product description is 300.").css("display", "block");
             validationCheck.product_description = false;
       } else if (validProductDescription.test(updatedProduct.product_description)){
             $("#updateModal .invalid-product_description").css("display", "none")
