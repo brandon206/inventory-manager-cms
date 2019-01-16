@@ -137,7 +137,7 @@ function clearAddInventoryFormInputs(){
 function renderProductOnDom(inventoryObject){
       var table_row = $("<tr>");
       var title_TD = $("<td>").addClass("table_row_items").text(inventoryObject.product_title);
-      var description_TD = $("<td>").addClass("table_row_items").text(inventoryObject.product_description);
+      var description_TD = $("<td>").addClass("table_row_items").text(inventoryObject.product_description).css({'word-break':'break-all', 'word-wrap':'break-word'});
       var quantity_TD = $("<td>").addClass("table_row_items").text(inventoryObject.quantity);
       var price_TD = $("<td>").text(`$${inventoryObject.price}`);
       var edit_TD = $("<td>").addClass("center_button").css({'word-break':'break-all', 'word-wrap':'break-word'});
