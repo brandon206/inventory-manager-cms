@@ -1,9 +1,9 @@
 <?php
 $servername = "localhost";
-$username = "brandon";
-$password = "bananaRacecar";
+$username = "root";
+$password = "root";
 $database_name = "ecom_cart_db";
-$port = "3306";
+$port = "8888";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database_name, $port);
