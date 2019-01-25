@@ -1,9 +1,9 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "brandon";
+$password = "bananaRacecar";
 $database_name = "ecom_cart_db";
-$port = "8888";
+$port = "3306";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database_name, $port);
@@ -12,6 +12,6 @@ $conn = new mysqli($servername, $username, $password, $database_name, $port);
 if (empty($conn)) {
     print("Connection unavailable");
     exit();
-} 
+}
 // echo "Connected successfully";
 ?>
