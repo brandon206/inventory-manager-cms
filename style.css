@@ -6,6 +6,10 @@
     color: red;
 }
 
+.inventory-list-container {
+    margin-top: 1rem;
+}
+
 .center_button {
     text-align: center;
 }
